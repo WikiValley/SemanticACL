@@ -18,6 +18,7 @@ namespace MediaWiki\Extension\SemanticACL;
 
 use Title;
 use Article;
+use MediaWiki\Revision\SlotRecord;
 use RequestContext;
 use SMW;
 use SMWDIWikiPage;
@@ -376,7 +377,7 @@ class SemanticACL
         		    $parser =  \MediaWiki\MediaWikiServices::getInstance()->getParserFactory()->create(); // Use a new parser to avoid interfering with the current parser.
 					$parser->startExternalParse( $title, \ParserOptions::newFromContext(RequestContext::getMain()), \Parser::OT_PREPROCESS );
 					$text = $parser->recursivePreprocess(
-        		        Article::newFromTitle($title, RequestContext::getMain())->getRevision()->getContent()->getNativeData(),
+			        Article::newFromTitle($title, RequestContext::getMain())->getPage()->getRevisionRecord()->getContent( SlotRecord::MAIN )->getNativeData(),
         		        $title,
         		        $parser->mOptions
 					);
