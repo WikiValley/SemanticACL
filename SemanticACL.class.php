@@ -212,9 +212,12 @@ class SemanticACL {
 	 *   keys when multiple messages are needed (although it seems to take an array as one message key with parameters?).
 	 * @return bool if the user has permissions to do the action
 	 */
-	public static function onUserCan( &$title, &$user, $action, &$result ) {
+	public static function onGetUserPermissionsErrors( $title, $user, $action, &$result ) {
 		// This hook is also triggered when displaying search results.
-		return self::hasPermission( $title, $action, $user, false );
+		if( !self::hasPermission( $title, $action, $user, false ) ) {
+			$result = false;
+			return false;
+		}
 	}
 
 	/**
